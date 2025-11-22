@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Header, Headers, Param, Patch, Post, Query } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
@@ -37,14 +37,23 @@ export class UsersController {
         return this.users.find((user) => user.id == id);
     }
 
-    @Post()
-    createUser(@Body() body: any) {
-        let exist = this.users.filter((user) => user.id === body.id);
-        if (exist.length === 0) {
-            this.users.push(body);
-        } else {
-            return 'already exist';
+    @Post("/add")
+    createUser(@Body() data, @Headers('authorization') authHeader: string) {
+        console.log('Authorization', authHeader);
+        const newUser = { id: Date.now(), ...data };
+        this.users.push(newUser);
+        return newUser;
+    }
+
+    @Patch('/:id')
+    update(@Param('id') id: number, @Body() data) {
+        const user = this.users.find(user => user.id == Number(id));
+        if (user) {
+            user.username = data.username
+            user.email = data.email
+            user.status = data.status
+            return user;
         }
-        return body;
+        return null;
     }
 }

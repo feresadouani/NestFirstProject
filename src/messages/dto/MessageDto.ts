@@ -1,7 +1,8 @@
 import { IsString } from "class-validator";
 
 export class MessageDto {
-    id: number;
+    @IsString()
     content: string;
-    
+    @IsString()
+    status: string;
 }

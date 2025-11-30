@@ -8,11 +8,23 @@ import { AudioModule } from './audio/audio.module';
 import { VehiculeModule } from './vehicule/vehicule.module';
 import { GenerateurModule } from './generateur/generateur.module';
 import { PhareModule } from './phare/phare.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Message } from './messages/message.entity';
+import { User } from './users/user.entity';
 
 @Global()
 @Module({
-  imports: [UsersModule, MessagesModule, MoteurModule, AudioModule, VehiculeModule, GenerateurModule, PhareModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mongodb', // Déclare que c'est MongoDB
+      host: 'localhost', // L'adresse de ton serveur MongoDB
+      port: 27017, // Le port de MongoDB
+      database: '4TWIN', // Nom de la base de données
+      entities: [Message, User], // Liste des entités
+      synchronize: true,
+    }),
+    UsersModule, MessagesModule, MoteurModule, AudioModule, VehiculeModule, GenerateurModule, PhareModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

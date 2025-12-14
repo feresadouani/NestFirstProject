@@ -16,8 +16,16 @@ export class User {
     @Column()
     password: string;
 
+    @Column()
+    role: string;
+
     @Column({ default: false })
     active: boolean;
+
+    @Column()
+    createdAt: Date;
+    @Column()
+    updatedAt: Date;
 
     @BeforeInsert()
     logBeforeInsert() {

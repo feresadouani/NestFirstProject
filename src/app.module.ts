@@ -11,10 +11,15 @@ import { PhareModule } from './phare/phare.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Message } from './messages/message.entity';
 import { User } from './users/user.entity';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Global()
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
     TypeOrmModule.forRoot({
       type: 'mongodb', // Déclare que c'est MongoDB
       host: 'localhost', // L'adresse de ton serveur MongoDB
